@@ -25,12 +25,28 @@
  */
 package org.thecodebakers.webxpose.netbaker.core;
 
+import java.net.ServerSocket;
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
 public class NetBakerService extends Service {
 
+	private int porta;
+	private int portaAdm;
+	protected ServerSocket serverSocket;
+	protected ServerSocket serverAdmSocket;
+	private Thread mainProcessThread;
+	private Thread adminProcessThread;
+	private final String TAG = "NetBaker";
+	private String serverName;
+	private static NetBakerService selfRef;
+	protected boolean log = true;
+	protected c
+	
 	@Override
 	public IBinder onBind(Intent arg0) {
 
