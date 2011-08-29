@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string name="servidorIniciando">Starting server...</string> <!-- sit 1 -->
-<string name="onstartok">Server started</string> <!-- sit 2 -->
-<string name="errorOpeningAdminPort">Error opening admin port</string> <!-- sit 3 -->
-<string name="errorOpeningPort">Error opening port</string> <!-- sit 4 -->
-<string name="nonNumericPorts">Both ports must be numeric</string> <!-- sit 5 -->
-<string name="missingProtocolClassName">Protocol classname is missing</string> <!-- sit 6 -->
-<string name="missingProtocolClass">Protocol class not found</string> <!-- sit 7 -->
-<string name="cannotAccessProtocol">Protocol class must be public</string> <!-- sit 8 -->
-<string name="cannotInstantiateProtocol">Protocol class cannot be instantiated</string> <!-- sit 9 -->
-<string name="cannotCastProtocol">Protocol must implement \"InetBakerProtocol\"</string> <!-- sit 10 -->
+<string name="NB_servidorIniciando">Starting server...</string> <!-- sit 1 -->
+<string name="NB_onstartok">Server started</string> <!-- sit 2 -->
+<string name="NB_errorOpeningAdminPort">Error opening admin port</string> <!-- sit 3 -->
+<string name="NB_errorOpeningPort">Error opening port</string> <!-- sit 4 -->
+<string name="NB_nonNumericPorts">Both ports must be numeric</string> <!-- sit 5 -->
+<string name="NB_missingProtocolClassName">Protocol classname is missing</string> <!-- sit 6 -->
+<string name="NB_missingProtocolClass">Protocol class not found</string> <!-- sit 7 -->
+<string name="NB_cannotAccessProtocol">Protocol class must be public</string> <!-- sit 8 -->
+<string name="NB_cannotInstantiateProtocol">Protocol class cannot be instantiated</string> <!-- sit 9 -->
+<string name="NB_cannotCastProtocol">Protocol must implement \"InetBakerProtocol\"</string> <!-- sit 10 -->
+<string name="NB_exceptionStopping">Exception stopping service</string> <!-- sit 11 -->
+<string name="NB_stoppingService">Processing stop...</string> <!-- sit 12 -->
+<string name="NB_adminRequest">Admin request received</string> <!-- sit 13 -->
+<string name="NB_requestShutDown">Shutdown request received</string> <!-- sit 14 -->
+<string name="NB_exceptionAdminRequest">Exception processing admin request</string> <!-- sit 15 -->
+<string name="NB_exceptionReadAdminRequest">Exception reading admin request</string> <!-- sit 16 -->
+<string name="NB_ioExceptionProcessinProtocol">IOException processing protocol</string> <!-- sit 17 -->
+<string name="NB_exceptionProcessinProtocol">Exception processing protocol</string> <!-- sit 18 -->
+<string name="NB_terminateByRequest">Protocol requested service shutdown</string> <!-- sit 19 -->
 </resources>

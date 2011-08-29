@@ -28,5 +28,7 @@ package org.thecodebakers.webxpose.netbaker.core;
 import java.net.Socket;
 
 public interface InetBakerProtocol {
-	boolean processRequest(Socket s);
+	void setSocket(Socket s);
+	void setServiceInstance(NetBakerService service);
+	boolean processRequest();
 }
