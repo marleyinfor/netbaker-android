@@ -25,9 +25,71 @@
  */
 package org.thecodebakers.webxpose.netbaker.core;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
 import android.content.Context;
+import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
+import android.widget.Toast;
 
 public class NetBakerStarter {
-	private static Context context;
-	
+	public static Context context;
+	private static final String ThisTag = "NetBakerStarter";
+    public static List<String> checkNetwork() {
+        Resources res = context.getResources();
+        List<String> enderecos = new ArrayList<String>();
+        ConnectivityManager conMgr =  (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = conMgr.getActiveNetworkInfo();
+        String ipa = "";
+        if (info != null) {
+                if (info.isAvailable()) {
+                        if (info.isConnected()) {
+                                try {
+                                        Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces();
+                                        while (nis.hasMoreElements()) {
+                                                NetworkInterface ni = nis.nextElement();
+                                                Enumeration<InetAddress> ipads = ni.getInetAddresses();
+                                                while (ipads.hasMoreElements()) {
+                                                        InetAddress ipad = ipads.nextElement();
+                                                        ipa = "";
+                                                        if (!ipad.isLoopbackAddress()) {
+                                                                ipa += ipad.getHostAddress().toString();
+                                                                if (ipad.isSiteLocalAddress()) {
+                                                                        ipa += " (LOCAL)";
+                                                                }
+                                                        }
+                                                }
+                                                if (ipa.length() > 0) {
+                                                        enderecos.add(ipa);
+                                                }
+                                        }
+                                } catch (SocketException ex) {
+                                        Log.e(ThisTag, ex.toString());
+                                        Toast.makeText(context, ex.toString(), Toast.LENGTH_LONG).show();
+                                }
+                        }
+                        else {
+                                Log.e(ThisTag, res.getString(R.string.actConNotConnected));
+                                Toast.makeText(context, res.getString(R.string.actConNotConnected), Toast.LENGTH_LONG).show();
+                        }
+                }
+                else {
+                        Log.e(ThisTag, res.getString(R.string.actConNotAvailable));
+                        Toast.makeText(context, res.getString(R.string.actConNotAvailable), Toast.LENGTH_LONG).show();
+                }               
+        }
+        else {
+                Log.e(ThisTag, res.getString(R.string.actConNotAvailableNull));
+                Toast.makeText(context, res.getString(R.string.actConNotAvailableNull), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
 }
