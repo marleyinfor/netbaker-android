@@ -24,12 +24,6 @@
  * @author Cleuton Sampaio e Francisco Rogrigues - thecodebakers@gmail.com
  */
 
-// This is a very simple HTTP protocol implementation to demonstrate NetBaker
-// It returns the date and time upon each request
-// Implementação simples de protocolo HTTP, apenas para demonstração
-// Retorna a data e hora a cada request
-
-
 package org.thecodebakers.webxpose.netbaker.protocols;
 
 import java.io.BufferedReader;
@@ -44,6 +38,10 @@ import org.thecodebakers.webxpose.netbaker.core.InetBakerProtocol;
 import org.thecodebakers.webxpose.netbaker.core.NetBakerService;
 import org.thecodebakers.webxpose.netbaker.core.NetBakerService.MSGTYPE;
 
+//This is a very simple HTTP protocol implementation to demonstrate NetBaker
+//It returns the date and time upon each request
+//Implementação simples de protocolo HTTP, apenas para demonstração
+//Retorna a data e hora a cada request
 
 public class NetBakerHttp implements InetBakerProtocol {
 	
