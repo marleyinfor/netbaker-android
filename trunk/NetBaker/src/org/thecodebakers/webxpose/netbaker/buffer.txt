@@ -1,0 +1,18 @@
+	static final Map<Integer,String> httpStatusCodes = new HashMap<Integer, String>();
+	static Service selfRef;
+
+	static final int HTTP_OK = 200;
+	static final int BAD_REQUEST = 400;
+	static final int FORBIDDEN = 403;
+	static final int NOT_FOUND = 404;
+	static final int INTERNAL_SERVER_ERROR = 500;
+	static final int NOT_IMPLEMENTENT = 501;
+	static {
+		httpStatusCodes.put(200, "200 OK");
+		httpStatusCodes.put(400, "400 Bad Request");
+		httpStatusCodes.put(403, "403 Forbidden");
+		httpStatusCodes.put(404, "404 Not Found");
+		httpStatusCodes.put(500, "500 Internal Server Error");
+		httpStatusCodes.put(501, "501 Not Implemented");
+	}
+	

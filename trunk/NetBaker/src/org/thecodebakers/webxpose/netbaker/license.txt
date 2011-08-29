@@ -1,0 +1,90 @@
+Plase read all.
+
+
+English version
+----------------
+
+Why this?
+
+GPL introduces the obligation to distribute the source code of your own software. The intention is good, but represents a problem for software companies and
+independent software authors: distribute their product's source code. We think that proprietary products are a legal form of distributing software, and it is
+the right of the author.
+
+LGPL may be the best choise to preserve our rights and give you the freedom to create other products.
+
+This software's license is BASED on LGPL, but have some additions, which you MUST follow. 
+
+In case of any questions, please feel free to contact the authors.
+
+
+License to use NetBaker - TCP programming framework for Android.
+
+Even if it is not in all the source files, this is the copyright text which you must consider valid for this software.
+
+/*
+ * Copyright (C) 2011 The Code Bakers
+ * Authors: Cleuton Sampaio e Francisco Rodrigues
+ * e-mail: thecodebakers@gmail.com
+ * Project: http://code.google.com/p/netbaker-android
+ * Site: http://www.thecodebakers.org
+ *
+ * Licensed under the GNU LGPL, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the THIS License and LGPL.
+ * You may obtain a copy of the LGPL at
+ *
+ *      http://www.gnu.org/licenses/lgpl.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * The over the LGPL V 3 there is the following addition: 
+ * - The authors may create another version of the program which will be distributed
+ *   as proprietary software.
+ * 
+ * @author Cleuton Sampaio e Francisco Rogrigues - thecodebakers@gmail.com
+ */
+ 
+ This is what you can do with this software:
+ 
+ 1) You can copy, modify, and transfer to anyone, even if you ask money for that - COPY and TRANSFER;
+ 2) You can create a derived work of this software - DERIVED WORK;
+ 3) You can create a another software which uses this software - SIMPLE USE;
+
+ Please attention for the difference between DERIVED WORK and SIMPLE USE. We Consider DERIVED WORK a software 
+ that you create BASED on this software. This means: 
+ - Create an upgrade of this software;
+ - Create another version of this software (for other platform, for example);
+ 
+ "Derived work" means that THIS software is responsible for the majority of the derived software's function, and does not
+ matter if you are using the source code or only the compiled version.
+ 
+ "Simple use" means that you are only using this software as part of the function of your own software. This means:
+ - Create a new product that uses this software to share information;
+ 
+ We consider as "Simple Use" if this software is not the main function of your own product. This can be done in source or
+ compiled form.
+ 
+ This is what you MUST do:
+ 
+ a) If you COPY AND TRANSFER the software in source form, you MUST give the entire package, including this license;
+ b) If you COPY AND TRANSFER a MODIFICATION you made to the software, you MUST give the source code and include the text "FOR MODIFIED WORKS", below. Your modifications must be GPL or LGPL;
+ c) If you create a DERIVED WORK of this software, does not matter if you made modifications, you MUST give the source code (of your product and our code) and follow items "a" and "b";
+ d) If you create a product classified as SIMPLE USE, you may distribute your product under the license you choose and you may not give the source code, provided that
+    you include the text "FOR SIMPLE USE" bellow. Your product may be proprietary software;  
+
+ FOR MODIFIED WORKS:
+ 
+ "This software is based on NetBaker (c) 2011 by The Code Bakers
+ " * Authors: Cleuton Sampaio e Francisco Rodrigues "
+ " * e-mail: thecodebakers@gmail.com "
+ " * Project: http://code.google.com/p/netbaker-android "
+ " * Site: http://www.thecodebakers.org " 
+ " * You must receive the entire source code of this software "
+ 
+ FOR SIMPLE USE:
+ 
+ "This software uses NetBaker (c) 2011 by The Code Bakers - http://www.thecodebakers.org"
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="servidorIniciando">Starting server...</string> <!-- sit 1 -->
+<string name="onstartok">Server started</string> <!-- sit 2 -->
+<string name="errorOpeningAdminPort">Error opening admin port</string> <!-- sit 3 -->
+<string name="errorOpeningPort">Error opening port</string> <!-- sit 4 -->
+<string name="nonNumericPorts">Both ports must be numeric</string> <!-- sit 5 -->
+<string name="missingProtocolClassName">Protocol classname is missing</string> <!-- sit 6 -->
+<string name="missingProtocolClass">Protocol class not found</string> <!-- sit 7 -->
+<string name="cannotAccessProtocol">Protocol class must be public</string> <!-- sit 8 -->
+<string name="cannotInstantiateProtocol">Protocol class cannot be instantiated</string> <!-- sit 9 -->
+<string name="cannotCastProtocol">Protocol must implement \"InetBakerProtocol\"</string> <!-- sit 10 -->
+</resources>
