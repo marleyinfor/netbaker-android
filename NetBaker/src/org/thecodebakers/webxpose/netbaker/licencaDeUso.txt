@@ -1,0 +1,85 @@
+Por favor, leia tudo: Versão em português.
+ 
+Por que isto?
+
+A GPL obriga aos desenvolvedores distribuírem o código-fonte de seus produtos de software. A intenção é boa, mas representa um problema para companhias de software
+e para desenvolvedores independentes: distribuir o código-fonte de seus produtos. Nós pensamos que o software proprietário é uma forma legal de distribuir software, 
+sendo um direito de seu autor.
+
+A LGPL pode ser a melhor escolha para preservar os nossos direitos e lhe dar a liberdade de criar novos produtos.
+
+A licença de uso deste software é BASEADA na LGPL, mas possui alguns aditivos que você DEVE seguir.
+
+Em caso de dúvidas, por favor contate os autores.
+ 
+ Licença para usar o NetBaker - Framework de programação TCP para Android:
+ 
+ Mesmo que não esteja em TODOS os arquivos deste projeto, este é o texto de copyright que você deve considerár como
+ válido para este software.
+  
+ /*
+ * Copyright (C) 2011 por Code Bakers
+ * Autores: Cleuton Sampaio e Francisco Rodrigues
+ * e-mail: thecodebakers@gmail.com
+ * Projeto: http://code.google.com/p/netbaker-android
+ * Site: http://www.thecodebakers.org
+ *
+ * Licenciado sob os termos da licença GNU LGPL, versão 3;
+ * Você não pode usar este software, exceto se seguir os termos DESTA licença e da LGPL.
+ * Você pode obter uma cópia da LGPL em:
+ *
+ *      http://www.gnu.org/licenses/lgpl.html
+ *
+ * A não quando requerido pela lei, ou concordado por escrito, este software 
+ * é distribuído sob esta licença em sua forma atual (AS IS), SEM GARANTIAS OU
+ * CONDIÇÕES DE QUALQUER TIPO, sejam explícitas ou implícitas. 
+ * Leia atentamente esta licença e a LGPL para saber permissões e limitações.
+ * 
+ * Sobre a LGPL V 3 existe um adendo:
+ * - Os autores reservam o direito de criar uma outra versão deste programa, na forma de
+ *   software proprietário. 
+ * 
+ * @author Cleuton Sampaio e Francisco Rogrigues - thecodebakers@gmail.com
+ */
+ 
+  Isto é o que você pode fazer com este software:
+ 
+ 1) Você pode copiar, modificar e transferir para qualquer pessoa, mesmo cobrando dinheiro por isto - CÓPIA E TRANSFERÊNCIA;
+ 2) Você pode criar um trabalho derivado deste software - TRABALHO DERIVADO;
+ 3) Você pode criar um outro software que usa este software - USO SIMPLES;
+
+ Preste atenção para a diferença entre TRABALHO DERIVADO e USO SIMPLES. Nós consideramos TRABALHO DERIVADO, um software
+ que você criou BASEADO neste software. Isto sinifica:
+ - Criar uma atualização deste software;
+ - Criar outra versão deste software (para outra plataforma, por exemplo);
+ 
+ "TRABALHO DERIVADO" significa que ESTE software é responsável pela maioria da funcionalidade do software derivado, não 
+ importando se você utilizou o código-fonte ou uma versão compilada deste software. 
+ 
+ "Uso simples" significa que você está apenas utilizando este software como parte da funcionalidade do seu próprio software. 
+ Isto significa:
+ - Criar um novo produto que use este software para compartilhar informação;
+ 
+ Nós consideramos como "Uso simples" se este software não é a função principal do seu novo produto. E você pode fazer uso
+ simples da versão compilada ou do código-fonte. 
+ 
+ Isto é o que você DEVE fazer:
+ 
+ a) Se você fez CÓPIA E TRANSFERÊNCIA deste software, deve fornecer o pacote completo, incluindo os fontes e esta licença;
+ b) Se você fez CÓPIA E TRANSFERÊNCIA e ainda modificou este software, deve distribuir o código-fonte e incluir o texto "PARA TRABALHOS MODIFICADOS" abaixo. Suas modificações devem ser GPL ou LGPL;
+ c) Se você criou um TRABALHO DERIVADO deste software, não importando se você fez ou não modificações, deve distribuir o código-fonte (nosso e o seu) e seguir os itens "a" e "b";
+ d) Se você criou um produto classificado como USO SIMPLES, pode distribuí-lo sob a licença que desejar, e não é necessário dar o código-fonte, desde que tenha incluído o texto "PARA USO SIMPLES" abaixo.
+    Seu novo produto pode ser até mesmo software proprietário;
+    
+ PARA TRABALHOS MODIFICADOS:
+ 
+ "Este software é baseado no NetBaker (c) 2011 por The Code Bakers
+ " * Autores: Cleuton Sampaio e Francisco Rodrigues "
+ " * e-mail: thecodebakers@gmail.com "
+ " * Projeto: http://code.google.com/p/netbaker-android "
+ " * Site: http://www.thecodebakers.org " 
+ " * Você deve ter recebido o código-fonte completo deste software "
+ 
+ PARA USO SIMPLES:
+ 
+ "Este software usa o NetBaker (c) 2011 por The Code Bakers - http://www.thecodebakers.org"
