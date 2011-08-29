@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="NBH_received">Received from client</string> <!-- 101 -->
+<string name="NBH_iOException">IOException</string> <!-- 102 -->
+<string name="NBH_exception">Exception</string> <!-- 103 -->
+</resources>
