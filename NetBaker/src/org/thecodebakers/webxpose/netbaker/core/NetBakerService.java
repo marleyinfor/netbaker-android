@@ -31,8 +31,6 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.thecodebakers.webxpose.netbaker.R;
-
 import android.app.Service;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -58,6 +56,7 @@ public class NetBakerService extends Service {
 	public boolean toastError = false;
 	protected String protocolClassName = null;
 	protected InetBakerProtocol protocol = null;
+	protected String packageName;
 
 	// Constants
 	public static enum MSGTYPE {TINFO, TDEBUG, TWARN, TERROR};
@@ -69,11 +68,12 @@ public class NetBakerService extends Service {
 		if (this.serverName.length() == 0) {
 			serverName = TAG;
 		}
-		this.msg(MSGTYPE.TINFO, this.getProps(R.string.NB_servidorIniciando, 1));
+		this.msg(MSGTYPE.TINFO, this.getProps("NB_servidorIniciando", 1));
 		parseExtras(intent);
 
 		try {
 			serverSocket = new ServerSocket(porta);
+			this.packageName = getPackageName();
 			try {
 				serverAdmSocket = new ServerSocket(portaAdm);
 				ProcessRequests procReq = new ProcessRequests(serverSocket);
@@ -83,15 +83,15 @@ public class NetBakerService extends Service {
 				adminProcessThread = new Thread(procAdm);
 				adminProcessThread.start();
 				// Is good when everything runs ok...
-				this.msg(MSGTYPE.TINFO, this.getProps(R.string.NB_onstartok, 2));
+				this.msg(MSGTYPE.TINFO, this.getProps("NB_onstartok", 2));
 				return START_STICKY;
 			}
 			catch (Exception ex) {
-				this.msg(MSGTYPE.TERROR, this.getProps(R.string.NB_errorOpeningAdminPort, 3));
+				this.msg(MSGTYPE.TERROR, this.getProps("NB_errorOpeningAdminPort", 3));
 			}
 		}
 		catch (Exception ex) {
-			this.msg(MSGTYPE.TERROR, this.getProps(R.string.NB_errorOpeningPort, 4));
+			this.msg(MSGTYPE.TERROR, this.getProps("NB_errorOpeningPort", 4));
 		}
 		return START_NOT_STICKY;
 	}
@@ -122,13 +122,13 @@ public class NetBakerService extends Service {
 					clientThread.start();
 				}
 				catch(IOException ioe) {
-					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps(R.string.NB_ioExceptionProcessinProtocol, 17));
+					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_ioExceptionProcessinProtocol", 17));
 				}
 				catch(InterruptedException ex) {
 					break;
 				}
 				catch(Exception ex) {
-					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps(R.string.NB_exceptionProcessinProtocol, 18));
+					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_exceptionProcessinProtocol", 18));
 				}
 			}			
 		}
@@ -142,7 +142,7 @@ public class NetBakerService extends Service {
 			// If protocol returns true, then we must stop the service
 			
 			if (NetBakerService.selfRef.protocol.processRequest()) 	{
-				NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps(R.string.NB_terminateByRequest, 19));
+				NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_terminateByRequest", 19));
 				NetBakerService.selfRef.stopEverything();
 			}
 		}
@@ -166,13 +166,13 @@ public class NetBakerService extends Service {
                     if(processa(s)) {
                     	// Request to stop received:
                     	NetBakerService.selfRef.stopEverything();
-                    	NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps(R.string.NB_stoppingService, 12));
+                    	NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_stoppingService", 12));
                     }
                     s.close();	// Close socket anyway
                     s = null;
 				}
 				catch(IOException ioe) {
-					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps(R.string.NB_exceptionAdminRequest, 15));
+					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_exceptionAdminRequest", 15));
 					break;
 				}
 			}							
@@ -187,17 +187,17 @@ public class NetBakerService extends Service {
 				
 				// Read what came into the request
 				String linha = br.readLine();
-				NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps(R.string.NB_adminRequest, 13) + " : " + linha);
+				NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_adminRequest", 13) + " : " + linha);
 
 				if (linha.indexOf("shutdown.cgi") >= 0) {
-					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps(R.string.NB_requestShutDown, 14));
+					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_requestShutDown", 14));
 					NetBakerService.selfRef.stopSelf();
 					resultado = true;
 				}
 			}
 			catch (IOException ioe) {
 				resultado = true;
-				NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps(R.string.NB_exceptionReadAdminRequest, 16));
+				NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_exceptionReadAdminRequest", 16));
 			}
 			return resultado;
 		}
@@ -213,7 +213,7 @@ public class NetBakerService extends Service {
 			this.serverSocket.close();
 			this.serverAdmSocket.close();
 		} catch (IOException e) {
-			this.msg(MSGTYPE.TERROR, this.getProps(R.string.NB_exceptionStopping, 11) + " " + e.getMessage());
+			this.msg(MSGTYPE.TERROR, this.getProps("NB_exceptionStopping", 11) + " " + e.getMessage());
 		}
 		
 	}
@@ -226,7 +226,7 @@ public class NetBakerService extends Service {
 			this.portaAdm = Integer.parseInt(extras.getString("adminPort"));
 		}
 		catch (NumberFormatException nfe) {
-			this.msg(MSGTYPE.TERROR, this.getProps(R.string.NB_nonNumericPorts, 5));
+			this.msg(MSGTYPE.TERROR, this.getProps("NB_nonNumericPorts", 5));
 			resultado = false;
 		}
 		this.serverName = extras.getString("serverName");
@@ -235,7 +235,7 @@ public class NetBakerService extends Service {
 		this.toastError = extras.getBoolean("toastError");
 		this.protocolClassName = extras.getString("protocolClassName");
 		if (this.protocolClassName == null) {
-			this.msg(MSGTYPE.TERROR, this.getProps(R.string.NB_missingProtocolClassName, 6));
+			this.msg(MSGTYPE.TERROR, this.getProps("NB_missingProtocolClassName", 6));
 			resultado = false;
 		}
 		else {
@@ -246,18 +246,18 @@ public class NetBakerService extends Service {
 					this.protocol.setServiceInstance(this);
 				}
 				catch (ClassCastException cce) {
-					this.msg(MSGTYPE.TERROR, this.getProps(R.string.NB_cannotCastProtocol, 10));
+					this.msg(MSGTYPE.TERROR, this.getProps("NB_cannotCastProtocol", 10));
 					resultado = false;
 				} catch (IllegalAccessException e) {
-					this.msg(MSGTYPE.TERROR, this.getProps(R.string.NB_cannotAccessProtocol, 8));
+					this.msg(MSGTYPE.TERROR, this.getProps("NB_cannotAccessProtocol", 8));
 					resultado = false;
 				} catch (InstantiationException e) {
-					this.msg(MSGTYPE.TERROR, this.getProps(R.string.NB_cannotInstantiateProtocol, 9));
+					this.msg(MSGTYPE.TERROR, this.getProps("NB_cannotInstantiateProtocol", 9));
 					resultado = false;
 				}
 			}
 			catch (ClassNotFoundException cnf) {
-				this.msg(MSGTYPE.TERROR, this.getProps(R.string.NB_missingProtocolClass, 7));
+				this.msg(MSGTYPE.TERROR, this.getProps("NB_missingProtocolClass", 7));
 				resultado = false;
 			}
 		}
@@ -286,9 +286,10 @@ public class NetBakerService extends Service {
 		}
 	}
 	
-	public String getProps(int id, int sit) {
+	public String getProps(String nomeString, int sit) {
 		String retorno = null;
 		try {
+			int id = res.getIdentifier(nomeString, "string", this.packageName);
 			retorno = res.getString(id);
 		}
 		catch(Resources.NotFoundException rnf) {

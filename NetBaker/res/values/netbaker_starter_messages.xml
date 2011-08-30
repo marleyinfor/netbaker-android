@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="NBS_socketException">Socket Exception checking network</string> <!-- 50 -->
+<string name="NBS_actNotConnected">Active Connection not connected</string> <!-- 51 -->
+<string name="NBS_actConNotAvailable">Active Connection not available</string> <!-- 52 -->
+<string name="NBS_actConNotAvailableNull">Active Connection not available (null)</string> <!-- 53 -->
+</resources>

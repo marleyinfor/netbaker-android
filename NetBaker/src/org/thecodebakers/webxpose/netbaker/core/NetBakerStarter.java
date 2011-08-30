@@ -25,14 +25,21 @@
  */
 package org.thecodebakers.webxpose.netbaker.core;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import org.thecodebakers.webxpose.netbaker.core.NetBakerService.MSGTYPE;
+
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -41,9 +48,13 @@ import android.widget.Toast;
 
 public class NetBakerStarter {
 	public static Context context;
+	public static boolean verbose = false;
+	public static boolean debug = false;
+	public static boolean toastError = true;
+	
 	private static final String ThisTag = "NetBakerStarter";
+	
     public static List<String> checkNetwork() {
-        Resources res = context.getResources();
         List<String> enderecos = new ArrayList<String>();
         ConnectivityManager conMgr =  (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = conMgr.getActiveNetworkInfo();
@@ -71,25 +82,108 @@ public class NetBakerStarter {
                                                 }
                                         }
                                 } catch (SocketException ex) {
-                                        Log.e(ThisTag, ex.toString());
-                                        Toast.makeText(context, ex.toString(), Toast.LENGTH_LONG).show();
+                                		NetBakerStarter.msg(MSGTYPE.TERROR, NetBakerStarter.getProps("NBS_socketException", 50) + " " + ex.getMessage());
                                 }
                         }
                         else {
-                                Log.e(ThisTag, res.getString(R.string.actConNotConnected));
-                                Toast.makeText(context, res.getString(R.string.actConNotConnected), Toast.LENGTH_LONG).show();
+                        		NetBakerStarter.msg(MSGTYPE.TERROR, NetBakerStarter.getProps("NBS_actNotConnected", 51));
                         }
                 }
                 else {
-                        Log.e(ThisTag, res.getString(R.string.actConNotAvailable));
-                        Toast.makeText(context, res.getString(R.string.actConNotAvailable), Toast.LENGTH_LONG).show();
+                		NetBakerStarter.msg(MSGTYPE.TERROR, NetBakerStarter.getProps("NBS_actConNotAvailable", 52));
                 }               
         }
         else {
-                Log.e(ThisTag, res.getString(R.string.actConNotAvailableNull));
-                Toast.makeText(context, res.getString(R.string.actConNotAvailableNull), Toast.LENGTH_LONG).show();
+        		NetBakerStarter.msg(MSGTYPE.TERROR, NetBakerStarter.getProps("NBS_actConNotAvailableNull", 53));
         }
-
+        return enderecos;
     }
+    
+    
+    public static boolean checkAdminPort(int adminPort) {
+        StringBuffer bigBuf = new StringBuffer();
+        boolean resultado = false;
+        try {
+                InputStream strm = new URL("http://localhost:" + adminPort + "/").openStream();
+                BufferedReader rdr = new BufferedReader(new InputStreamReader(strm));
+                String thisLine = rdr.readLine();
+                while (thisLine != null) {
+                        bigBuf = bigBuf.append(thisLine);
+                        thisLine = rdr.readLine();
+                }
+                rdr.close();
+                resultado = true;
+                } catch (Exception e) {
+                }
+        return resultado;       
+    }
+    
+    public static void startService(
+    			int porta, 
+    			int portaAdmin,
+    			String serverName,
+    			String protocolClassName) {
+        Intent intent = new Intent(context, NetBakerService.class);
+        intent.putExtra("serverName", serverName);
+        intent.putExtra("port", porta);
+        intent.putExtra("adminPort", portaAdmin);
+        intent.putExtra("debug", NetBakerStarter.debug);
+        intent.putExtra("verbose", NetBakerStarter.verbose);
+        intent.putExtra("toastError", NetBakerStarter.toastError);
+        intent.putExtra("protocolClassName", protocolClassName);
+        context.startService(intent);   
+    }
+    
+    public static void requestStop(int adminPort) {
+        StringBuffer bigBuf = new StringBuffer();
+        try {
+                InputStream strm = new URL("http://localhost:" + adminPort + "/shutdown.cgi").openStream();
+                BufferedReader rdr = new BufferedReader(new InputStreamReader(strm));
+                String thisLine = rdr.readLine();
+                while (thisLine != null) {
+                        bigBuf = bigBuf.append(thisLine);
+                        thisLine = rdr.readLine();
+                }
+                rdr.close();
+                } catch (Exception e) {
+                }
+    }
+    
+    // Private methods
+    
+    
+	private static void msg(MSGTYPE tipo, String mensagem) {
+		switch(tipo) {
+		case TINFO:
+			if (NetBakerStarter.verbose) {
+				Log.i(NetBakerStarter.ThisTag, mensagem);
+			}
+		case TWARN:
+			if (NetBakerStarter.verbose) {
+				Log.w(NetBakerStarter.ThisTag, mensagem);
+			}
+		case TDEBUG:
+			if (NetBakerStarter.debug) {
+				Log.d(NetBakerStarter.ThisTag, mensagem);
+			}
+		case TERROR:
+			Log.e(NetBakerStarter.ThisTag, mensagem);
+			if (NetBakerStarter.toastError) {
+				Toast.makeText(NetBakerStarter.context, mensagem, Toast.LENGTH_LONG);
+			}
+		}
+	}
+	
+	private static String getProps(String nomeString, int sit) {
+		String retorno = null;
+		try {
+			int id = context.getResources().getIdentifier(nomeString, "string", context.getPackageName());
+			retorno = context.getResources().getString(id);
+		}
+		catch(Resources.NotFoundException rnf) {
+			retorno = "NB message situation: " + sit;
+		}
+		return retorno;
+	}
 
 }
