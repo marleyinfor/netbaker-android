@@ -33,7 +33,6 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Date;
 
-import org.thecodebakers.webxpose.netbaker.R;
 import org.thecodebakers.webxpose.netbaker.core.InetBakerProtocol;
 import org.thecodebakers.webxpose.netbaker.core.NetBakerService;
 import org.thecodebakers.webxpose.netbaker.core.NetBakerService.MSGTYPE;
@@ -76,7 +75,7 @@ public class NetBakerHttp implements InetBakerProtocol {
 			// Read request
 			String linha = br.readLine();
 
-			this.service.msg(MSGTYPE.TINFO, this.service.getProps(R.string.NBH_received, 101) + linha);
+			this.service.msg(MSGTYPE.TINFO, this.service.getProps("NBH_received", 101) + linha);
 			
 			StringBuffer saida = new StringBuffer();
 			Date data = new Date();
@@ -96,10 +95,10 @@ public class NetBakerHttp implements InetBakerProtocol {
 			dos.close();
 		}
 		catch(IOException ioe) {
-			this.service.msg(MSGTYPE.TERROR, this.service.getProps(R.string.NBH_iOException, 102));
+			this.service.msg(MSGTYPE.TERROR, this.service.getProps("NBH_iOException", 102));
 		}
 		catch(Exception ex) {
-			this.service.msg(MSGTYPE.TERROR, this.service.getProps(R.string.NBH_exception, 103));
+			this.service.msg(MSGTYPE.TERROR, this.service.getProps("NBH_exception", 103));
 		}
 		return resultado;
 	}
