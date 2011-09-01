@@ -38,7 +38,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
-
+/**
+ * This class is an Android Service which receives socket connections.
+ * @author The Code Bakers
+ *
+ */
 public class NetBakerService extends Service {
 
 	protected Resources res;
@@ -51,31 +55,41 @@ public class NetBakerService extends Service {
 	protected final String TAG = "NetBaker";
 	public String serverName;
 	protected static NetBakerService selfRef;
+	/**
+	 * debug True - gerenate debug info in log
+	 */
 	public boolean debug = true;
+	/**
+	 * verbose True - gerenate info messages in log
+	 */
 	public boolean verbose = true;
-	public boolean toastError = false;
 	protected String protocolClassName = null;
-	protected InetBakerProtocol protocol = null;
 	protected String packageName;
 
 	// Constants
+	/**
+	 * Message types
+	 */
 	public static enum MSGTYPE {TINFO, TDEBUG, TWARN, TERROR};
 	
 	// Main method
 	@Override
+	/**
+	 * Called when the service is about to be started.
+	 */
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		res = this.getResources();
-		if (this.serverName.length() == 0) {
-			serverName = TAG;
-		}
-		this.msg(MSGTYPE.TINFO, this.getProps("NB_servidorIniciando", 1));
+		NetBakerService.selfRef = this;
 		parseExtras(intent);
+		this.msg(MSGTYPE.TDEBUG, this.getProps("NB_debug", 20) + " extras: " + intent.getExtras().size());
+		this.msg(MSGTYPE.TINFO, this.getProps("NB_servidorIniciando", 1));
 
 		try {
 			serverSocket = new ServerSocket(porta);
-			this.packageName = getPackageName();
+			this.msg(MSGTYPE.TDEBUG, this.getProps("NB_debug", 20) + " Server Socket on port: " + porta);
 			try {
 				serverAdmSocket = new ServerSocket(portaAdm);
+				this.msg(MSGTYPE.TDEBUG, this.getProps("NB_debug", 20) + " Admin Socket on port: " + portaAdm);
 				ProcessRequests procReq = new ProcessRequests(serverSocket);
 				mainProcessThread = new Thread(procReq);
 				mainProcessThread.start();
@@ -112,23 +126,30 @@ public class NetBakerService extends Service {
 			Thread clientThread;
 			while (true) {
 				try {
+
 					if (Thread.interrupted()) {
 					    throw new InterruptedException();
 					}
-					Socket s = srvSock.accept(); 
-					NetBakerService.selfRef.protocol.setSocket(s);
-					ProtocolProcessing protocolProcessing = new ProtocolProcessing(); 
+					if (srvSock == null || srvSock.isClosed()) {
+						throw new InterruptedException();
+					}
+					Socket s = srvSock.accept();
+					InetBakerProtocol protocol = (InetBakerProtocol) Class.forName(NetBakerService.selfRef.protocolClassName).newInstance();
+					protocol.setServiceInstance(NetBakerService.selfRef);
+					ProtocolProcessing protocolProcessing = new ProtocolProcessing(protocol,s);
 					clientThread = new Thread(protocolProcessing);
 					clientThread.start();
+					protocol = null;
 				}
 				catch(IOException ioe) {
 					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_ioExceptionProcessinProtocol", 17));
 				}
 				catch(InterruptedException ex) {
+					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_serverSocketIsClosed", 21));
 					break;
 				}
 				catch(Exception ex) {
-					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_exceptionProcessinProtocol", 18));
+					NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_exceptionProcessinProtocol", 18) + " " + ex.getMessage());
 				}
 			}			
 		}
@@ -137,16 +158,31 @@ public class NetBakerService extends Service {
 	// Worker thread class
 	
 	class ProtocolProcessing implements Runnable {
+
+		private InetBakerProtocol protocol;
+		private Socket s;
+		
+		ProtocolProcessing (InetBakerProtocol protocol, Socket s) {
+			this.protocol = protocol;
+			this.s = s;
+		}
+		
 		public void run() {
-			
 			// If protocol returns true, then we must stop the service
-			
-			if (NetBakerService.selfRef.protocol.processRequest()) 	{
+			if (protocol.processRequest(s)) 	{
 				NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_terminateByRequest", 19));
 				NetBakerService.selfRef.stopEverything();
 			}
+				
 		}
 	}
+
+	@Override
+	public IBinder onBind(Intent intent) {
+
+		return null;
+	}
+	
 	
 	
 	// Main request admin processing thread
@@ -165,8 +201,11 @@ public class NetBakerService extends Service {
                     s = srvSock.accept();
                     if(processa(s)) {
                     	// Request to stop received:
+                        s.close();	// Close socket anyway
+                        s = null;
                     	NetBakerService.selfRef.stopEverything();
                     	NetBakerService.selfRef.msg(MSGTYPE.TINFO, NetBakerService.selfRef.getProps("NB_stoppingService", 12));
+                    	return;
                     }
                     s.close();	// Close socket anyway
                     s = null;
@@ -205,7 +244,9 @@ public class NetBakerService extends Service {
 	}
 	
 	// Utility
-	
+	/**
+	 * Stop all threads and server sockets
+	 */
 	public synchronized void stopEverything() {
 		try {
 			this.mainProcessThread.interrupt();
@@ -220,20 +261,27 @@ public class NetBakerService extends Service {
 	
 	private boolean parseExtras(Intent intent) {
 		boolean resultado = true;
+		
 		Bundle extras = intent.getExtras();
+		this.packageName = extras.getString("packageName");
 		try {
-			this.porta = Integer.parseInt(extras.getString("port"));
-			this.portaAdm = Integer.parseInt(extras.getString("adminPort"));
+			this.porta = extras.getInt("port");
+			this.msg(MSGTYPE.TDEBUG, this.getProps("NB_debug", 20) + " port: " + this.porta);
+			this.portaAdm = extras.getInt("adminPort");
+			this.msg(MSGTYPE.TDEBUG, this.getProps("NB_debug", 20) + " adminport: " + this.portaAdm);
 		}
 		catch (NumberFormatException nfe) {
 			this.msg(MSGTYPE.TERROR, this.getProps("NB_nonNumericPorts", 5));
 			resultado = false;
 		}
 		this.serverName = extras.getString("serverName");
+		this.msg(MSGTYPE.TDEBUG, this.getProps("NB_debug", 20) + " serverName: " + this.serverName);
 		this.debug = extras.getBoolean("debug");
+		this.msg(MSGTYPE.TDEBUG, this.getProps("NB_debug", 20) + " debug: " + this.debug);
 		this.verbose = extras.getBoolean("verbose");
-		this.toastError = extras.getBoolean("toastError");
+		this.msg(MSGTYPE.TDEBUG, this.getProps("NB_debug", 20) + " verbose: " + this.verbose);
 		this.protocolClassName = extras.getString("protocolClassName");
+		this.msg(MSGTYPE.TDEBUG, this.getProps("NB_debug", 20) + " protocolClassName: " + this.protocolClassName);
 		if (this.protocolClassName == null) {
 			this.msg(MSGTYPE.TERROR, this.getProps("NB_missingProtocolClassName", 6));
 			resultado = false;
@@ -242,8 +290,9 @@ public class NetBakerService extends Service {
 			try {
 				Class.forName(this.protocolClassName);
 				try {
-					this.protocol = (InetBakerProtocol) Class.forName(this.protocolClassName).newInstance();
-					this.protocol.setServiceInstance(this);
+					InetBakerProtocol prot = (InetBakerProtocol) Class.forName(this.protocolClassName).newInstance();
+					this.msg(MSGTYPE.TDEBUG, this.getProps("NB_debug", 20) + " protocol class successfully loaded.");
+					prot = null;
 				}
 				catch (ClassCastException cce) {
 					this.msg(MSGTYPE.TERROR, this.getProps("NB_cannotCastProtocol", 10));
@@ -264,28 +313,39 @@ public class NetBakerService extends Service {
 		return resultado;
 	}
 	
+	/**
+	 * Write a message to the log
+	 * @param tipo Message type TINFO, TDEBUG, TERROR, TWARN
+	 * @param mensagem Message text
+	 */
 	public void msg(MSGTYPE tipo, String mensagem) {
 		switch(tipo) {
 		case TINFO:
 			if (this.verbose) {
 				Log.i(this.TAG, mensagem);
 			}
+			break;
 		case TWARN:
 			if (this.verbose) {
 				Log.w(this.TAG, mensagem);
 			}
+			break;
 		case TDEBUG:
 			if (this.debug) {
 				Log.d(this.TAG, mensagem);
 			}
+			break;
 		case TERROR:
 			Log.e(this.TAG, mensagem);
-			if (this.toastError) {
-				Toast.makeText(this.getApplicationContext(), mensagem, Toast.LENGTH_LONG);
-			}
 		}
 	}
 	
+	/**
+	 * Try to get a string resource. Otherwise, show the message number.
+	 * @param nomeString String resource name
+	 * @param sit Message number to show
+	 * @return Message text
+	 */
 	public String getProps(String nomeString, int sit) {
 		String retorno = null;
 		try {
@@ -301,11 +361,5 @@ public class NetBakerService extends Service {
 
 	// Other
 	
-	@Override
-	public IBinder onBind(Intent arg0) {
-
-		return null;
-	}
-
 	
 }

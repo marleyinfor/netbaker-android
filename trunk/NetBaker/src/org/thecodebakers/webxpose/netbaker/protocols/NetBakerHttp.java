@@ -42,20 +42,24 @@ import org.thecodebakers.webxpose.netbaker.core.NetBakerService.MSGTYPE;
 //Implementação simples de protocolo HTTP, apenas para demonstração
 //Retorna a data e hora a cada request
 
+/**
+ * A sample InetBakerProtocol implementation class.
+ */
 public class NetBakerHttp implements InetBakerProtocol {
 	
 	private NetBakerService service;
-	private Socket socket;
 
-	public void setSocket(Socket s) {
-		this.socket = s;
-	}
-
+	/**
+	 * Reveive a service instance
+	 */
 	public void setServiceInstance(NetBakerService service) {
 		this.service = service;
 	}
 
-	public boolean processRequest() {
+	/**
+	 * process a request. Socket "s" was accepted by the service.
+	 */
+	public boolean processRequest(Socket s) {
 		/*
 		 * Use the same messaging mechanism of the service.
 		 * Create your own message file and number it above 100
@@ -68,15 +72,16 @@ public class NetBakerHttp implements InetBakerProtocol {
 		boolean resultado = false;
 		
 		try {
+			this.service.msg(MSGTYPE.TDEBUG, this.service.getProps("NBH_enderedProcessing", 105)
+					+ " Thread ID " + Thread.currentThread().getId()
+					+ " Socket: " + s.toString());
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(
-					this.socket.getInputStream()));
-			
+					s.getInputStream()));
 			// Read request
 			String linha = br.readLine();
-
 			this.service.msg(MSGTYPE.TINFO, this.service.getProps("NBH_received", 101) + linha);
-			
+		
 			StringBuffer saida = new StringBuffer();
 			Date data = new Date();
 			String mensagem = "<html><body><h3>Date " + data + "</h3></body></html>";
@@ -87,7 +92,8 @@ public class NetBakerHttp implements InetBakerProtocol {
 			saida.append("Connection: close\r\n");
 			saida.append("\r\n");
 			saida.append(mensagem);
-			DataOutputStream dos = new DataOutputStream(this.socket.getOutputStream());
+			
+			DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 			for (long inx = 0; inx < saida.toString().getBytes().length; inx++) {
 				dos.write(saida.toString().getBytes()[(int) inx]); 
 			}
@@ -95,10 +101,21 @@ public class NetBakerHttp implements InetBakerProtocol {
 			dos.close();
 		}
 		catch(IOException ioe) {
-			this.service.msg(MSGTYPE.TERROR, this.service.getProps("NBH_iOException", 102));
+			this.service.msg(MSGTYPE.TERROR, this.service.getProps("NBH_iOException", 102) + " ## THREAD: "  + Thread.currentThread().getId());
 		}
 		catch(Exception ex) {
-			this.service.msg(MSGTYPE.TERROR, this.service.getProps("NBH_exception", 103));
+			this.service.msg(MSGTYPE.TERROR, this.service.getProps("NBH_exception", 103) + ex.getMessage() + " ## THREAD: "  + Thread.currentThread().getId());
+		}
+		finally {
+			if (s != null) {
+				if (!s.isClosed()) {
+					try {
+						s.close();
+					} catch (IOException e) {
+						this.service.msg(MSGTYPE.TERROR, this.service.getProps("NBH_exceptionClosingSocket", 104) + " " + e.getMessage() + " ## THREAD: "  + Thread.currentThread().getId());
+					}
+				}
+			}
 		}
 		return resultado;
 	}

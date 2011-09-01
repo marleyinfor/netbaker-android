@@ -19,4 +19,6 @@
 <string name="NB_ioExceptionProcessinProtocol">IOException processing protocol</string> <!-- sit 17 -->
 <string name="NB_exceptionProcessinProtocol">Exception processing protocol</string> <!-- sit 18 -->
 <string name="NB_terminateByRequest">Protocol requested service shutdown</string> <!-- sit 19 -->
+<string name="NB_debug">Debug information!</string> <!-- sit 20 -->
+<string name="NB_serverSocketIsClosed">Server Socket is closed. Terminating protocol</string> <!-- sit 21 -->
 </resources>
