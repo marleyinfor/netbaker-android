@@ -1,0 +1,108 @@
+#summary Instruções básicas.
+
+= Introdução =
+
+O NetBaker é um framework para criar servidores TCP para a plataforma Android. Você poderá criar aplicações com servidores TCP de maneira fácil usando estas classes.
+
+= Detalhes =
+
+O NetBaker vem com um exemplo de servidor HTTP bem simples, o qual você pode modificar para usar. Você pode também criar seu próprio servidor, implementando a interface InetBakerProtocol.
+
+= Instalação =
+
+Por favor LEIA o arquivo de licença "licencaDeUso.txt", dentro do projeto.
+
+ # Copie o pacote "org.thecodebakers.webxpose.netbaker.core" para a pasta de fontes do seu projeto;
+ # Crie sua própria implementação da interface "InetBakerProtocol". Você deve implementar ambos os métodos. Veja os comentários dentro do código de exemplo para maiores instruções;
+ # Adicione as permissões de rede no arquivo "AndroidManifest.xml", como mostrado no exemplo;
+ # Copie os arquivos de string "netbaker_core_messages.xml" e "netbaker_starter_messages.xml" para a pasta "res/values" do seu projeto;
+ # Use a classe "NetBakerStarter" para verificar e iniciar o seu servidor;
+
+Exemplo básico de como iniciar um servidor baseado no NetBaker:
+{{{
+    	NetBakerStarter.context = this.getApplicationContext();
+    	NetBakerStarter.debug = true;
+    	NetBakerStarter.toastError = true;
+    	if (NetBakerStarter.checkNetwork().size() > 0) {
+    		if (!NetBakerStarter.checkAdminPort(8081)) {
+    			NetBakerStarter.startService(8080, 8081, "Test", "org.thecodebakers.webxpose.netbaker.protocols.NetBakerHttp");
+    		}
+    	}
+}}}
+
+Onde:
+ * 8080 - Porta TCP principal. Deve ser superior a 1024;
+ * 8081 - Porta TCP administrativa. Deve ser superior a 1024 e diferente da porta principal;
+ * "Test" - Nome do servidor;
+ * "org.thecodebakers.webxpose.netbaker.protocols.NetBakerHttp" - nossa implementação de um servidor HTTP. Você deve criar sua própria classe;
+
+Esta é a maneira básica de parar um servidor baseado no NetBaker:
+{{{
+    	NetBakerStarter.context = this.getApplicationContext();
+    	NetBakerStarter.debug = true;
+    	NetBakerStarter.toastError = true;
+    	if (NetBakerStarter.checkNetwork().size() > 0) {
+    		if (NetBakerStarter.checkAdminPort(8081)) {
+    			NetBakerStarter.requestStop(8081);
+    		}
+    	}
+}}}
+
+Os únicos componentes que você precisa criar são:
+The only components you need to create are:#summary basic instructions.
+
+= Introduction =
+
+NetBaker is a TCP framework for Android Platform. You can create TCP server applications quickly by using these classes.
+
+
+= Details =
+
+NetBaker comes with a simple HTTP server as example, which you can modify. Or you can create a new server by implementing the InetBakerProtocol interface. 
+
+= Installation =
+
+Please READ the license file "license.txt", located inside the project.
+
+ # Copy the package "org.thecodebakers.webxpose.netbaker.core" to your project's source folder;
+ # Create your own implementation of "InetBakerProtocol" interface. You must implement both methods. See comments inside our sample for instructions;
+ # Add network permissions to your "AndroidManifest.xml" file, as shown in the sample;
+ # Copy the string files "netbaker_core_messages.xml" and "netbaker_starter_messages.xml" to your project's "res/values" folder;
+ # Use class "NetBakerStarter" to check our start your server;
+
+This is a basic code to start a NetBaker based server:
+{{{
+    	NetBakerStarter.context = this.getApplicationContext();
+    	NetBakerStarter.debug = true;
+    	NetBakerStarter.toastError = true;
+    	if (NetBakerStarter.checkNetwork().size() > 0) {
+    		if (!NetBakerStarter.checkAdminPort(8081)) {
+    			NetBakerStarter.startService(8080, 8081, "Test", "org.thecodebakers.webxpose.netbaker.protocols.NetBakerHttp");
+    		}
+    	}
+}}}
+
+Where:
+ * 8080 - The main port number. Must be above 1024;
+ * 8081 - The admin port number. Must be above 1024 and different from main port number;
+ * "Test" - The server name;
+ * "org.thecodebakers.webxpose.netbaker.protocols.NetBakerHttp" - our sample implementation of an HTTP server. You must provide your own class;
+
+This is a basic code to stop a NetBaker based server:
+{{{
+    	NetBakerStarter.context = this.getApplicationContext();
+    	NetBakerStarter.debug = true;
+    	NetBakerStarter.toastError = true;
+    	if (NetBakerStarter.checkNetwork().size() > 0) {
+    		if (NetBakerStarter.checkAdminPort(8081)) {
+    			NetBakerStarter.requestStop(8081);
+    		}
+    	}
+}}}
+
+Os únicos componentes que você precisa criar são:
+ * A Activity de sua aplicação, a qual invoca os métodos da classe "NetBakerStarter";
+ * A sua implementação da interface "InetBakerProtocol";
+ * Por favor, use código de situação de mensagens superior a 100;
+
+O NetBaker utiliza alguns textos padronizados, os quais podem ser traduzidos, caso você queira. Para ser consistente, eu criei um código de situação, que é relacionado à situação e ao texto da mensagem. Se o NetBaker não encontrar um texto dentro dos recursos de string do seu projeto, ele vai exibir o código de situação. Portanto, se você for criar seu próprio projeto, inicie seu código de situação a partir de 100.
