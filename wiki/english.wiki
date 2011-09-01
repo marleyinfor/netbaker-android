@@ -11,6 +11,8 @@ NetBaker comes with a simple HTTP server as example, which you can modify. Or yo
 
 = Installation =
 
+Please READ the license file "license.txt", located inside the project.
+
  # Copy the package "org.thecodebakers.webxpose.netbaker.core" to your project's source folder;
  # Create your own implementation of "InetBakerProtocol" interface. You must implement both methods. See comments inside our sample for instructions;
  # Add network permissions to your "AndroidManifest.xml" file, as shown in the sample;
@@ -46,3 +48,10 @@ This is a basic code to stop a NetBaker based server:
     		}
     	}
 }}}
+
+The only components you need to create are:
+ * The starting activity of your application, which invokes the NetBakerStarter methods;
+ * Your server's implementation class, which must implement InetBakerProtocol interface;
+ * Please use message situation above 100;
+
+NetBaker uses some standard strings, which can be localized if you want. To be consistent, I created a "situation" number, which is related to the situation and the message string. If NetBaker cannot find the string resource in your project's package, then it shows the number. If you create your own protocol, please use situation numbers above 100.
