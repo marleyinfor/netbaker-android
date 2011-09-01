@@ -26,9 +26,21 @@
 package org.thecodebakers.webxpose.netbaker.core;
 
 import java.net.Socket;
-
+/**
+ * Plugable protocol interface.
+ * @author The Code Bakers
+ *
+ */
 public interface InetBakerProtocol {
-	void setSocket(Socket s);
+	/**
+	 * Inform Service instance.
+	 * @param service Service instance.
+	 */
 	void setServiceInstance(NetBakerService service);
-	boolean processRequest();
+	/**
+	 * Process a request.
+	 * @param s Client socket.
+	 * @return true - to kill the protocol and the server. false - ok, continue.
+	 */
+	boolean processRequest(Socket s);
 }

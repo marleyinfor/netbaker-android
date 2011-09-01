@@ -3,4 +3,6 @@
 <string name="NBH_received">Received from client</string> <!-- 101 -->
 <string name="NBH_iOException">IOException</string> <!-- 102 -->
 <string name="NBH_exception">Exception</string> <!-- 103 -->
+<string name="NBH_exceptionClosingSocket">Exception Closing Socket</string> <!-- 104 -->
+<string name="NBH_enderedProcessing">Processing request</string> <!-- 105 -->
 </resources>

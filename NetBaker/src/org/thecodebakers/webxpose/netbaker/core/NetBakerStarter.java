@@ -46,14 +46,23 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
+/**
+ * Convenience class to start NetBaker Service.
+ * @author The Code Bakers
+ *
+ */
 public class NetBakerStarter {
 	public static Context context;
-	public static boolean verbose = false;
-	public static boolean debug = false;
+	public static boolean verbose = true;
+	public static boolean debug = true;
 	public static boolean toastError = true;
 	
 	private static final String ThisTag = "NetBakerStarter";
 	
+	/**
+	 * Check network connectitivy.
+	 * @return A list of IP Addresses available or an empty list. 
+	 */
     public static List<String> checkNetwork() {
         List<String> enderecos = new ArrayList<String>();
         ConnectivityManager conMgr =  (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -99,7 +108,11 @@ public class NetBakerStarter {
         return enderecos;
     }
     
-    
+    /**
+     * Verify if the service is running by making a fake request to the admin port.
+     * @param adminPort Admin port number
+     * @return true - The service is running. False - the service is not running.
+     */
     public static boolean checkAdminPort(int adminPort) {
         StringBuffer bigBuf = new StringBuffer();
         boolean resultado = false;
@@ -118,22 +131,33 @@ public class NetBakerStarter {
         return resultado;       
     }
     
+    /**
+     * Start NetBaker Service.
+     * @param porta Main port, used to process requests.
+     * @param portaAdmin Service port, used to verify or kill the service.
+     * @param serverName A name which can be used by the server.
+     * @param protocolClassName Package and class name for the protocol class.
+     */
     public static void startService(
-    			int porta, 
-    			int portaAdmin,
-    			String serverName,
-    			String protocolClassName) {
+    	int porta, 
+    	int portaAdmin,
+    	String serverName,
+    	String protocolClassName) {
         Intent intent = new Intent(context, NetBakerService.class);
+        intent.putExtra("packageName", context.getPackageName());
         intent.putExtra("serverName", serverName);
         intent.putExtra("port", porta);
         intent.putExtra("adminPort", portaAdmin);
         intent.putExtra("debug", NetBakerStarter.debug);
         intent.putExtra("verbose", NetBakerStarter.verbose);
-        intent.putExtra("toastError", NetBakerStarter.toastError);
         intent.putExtra("protocolClassName", protocolClassName);
         context.startService(intent);   
     }
     
+    /**
+     * Send an admin request to stop the server. 
+     * @param adminPort Admin port.
+     */
     public static void requestStop(int adminPort) {
         StringBuffer bigBuf = new StringBuffer();
         try {
