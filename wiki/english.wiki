@@ -1,0 +1,18 @@
+#summary basic instructions.
+
+= Introduction =
+
+NetBaker is a TCP framework for Android Platform. You can create TCP server applications quickly by using these classes.
+
+
+= Details =
+
+NetBaker comes with a simple HTTP server as example, which you can modify. Or you can create a new server by implementing the InetBakerProtocol interface. 
+
+= Installation =
+
+1) Copy the package "org.thecodebakers.webxpose.netbaker.core" to your project's source folder;
+2) Create your own implementation of "InetBakerProtocol" interface. You must implement both methods. See comments inside our sample for instructions;
+3) Add network permissions to your "AndroidManifest.xml" file, as shown in the sample;
+4) Copy the string files "netbaker_core_messages.xml" and "netbaker_starter_messages.xml" to your project's "res/values" folder;
+5) Use class "NetBakerStarter" to check our start your server;
