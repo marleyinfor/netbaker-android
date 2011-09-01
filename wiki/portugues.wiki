@@ -49,9 +49,6 @@ Esta é a maneira básica de parar um servidor baseado no NetBaker:
 }}}
 
 Os únicos componentes que você precisa criar são:
-The only components you need to create are:
-
-Os únicos componentes que você precisa criar são:
  * A Activity de sua aplicação, a qual invoca os métodos da classe "NetBakerStarter";
  * A sua implementação da interface "InetBakerProtocol";
  * Por favor, use código de situação de mensagens superior a 100;
